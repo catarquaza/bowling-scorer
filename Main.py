@@ -28,13 +28,13 @@ for x in range(12):
         throw2 = int(input("Enter your Second score: "))
     frame = throw + throw2
 
+    # add points to previous frames with spares or strikes
     if prev_frame == "strike" or prev_frame == "spare":
-        frame += throw
-        print("add strike/spare stuff")
+        total += throw
     if prev_frame == "strike":
-        frame += throw2
+        total += throw2
     if prev_prev_frame == "strike":
-        frame += throw
+        total += throw
 
     # keep track of what happened two frames ago
     prev_prev_frame = prev_frame
@@ -49,7 +49,8 @@ for x in range(12):
 
     # print(frame_score)
     print("Frame: ", frame)
-    total += frame
+    if x <= 10:
+        total += frame
     print("Total score: " + str(total))
     # frame_score = frame
 
@@ -59,11 +60,18 @@ for x in range(12):
 print("Final score " + str(total))
 
 # throw
-# throw:   1    2     3    4
-# frame 1: 10   10   10                             total 30
+# throw:   1    2     3    4     5    6    7    8      9    10   11     12
+# frame 1: 10   10   10
 # frame 2:      10   10    10
-# frame 3:           10    10   10
-# frame 4:                 10   10
+# frame 3:           10    10    10
+# frame 4:                 10    10   10
+# frame 5:                       10   10   10
+# frame 6:                            10   10   10
+# frame 7:                                 10   10    10
+# frame 8:                                      10    10    10
+# frame 9:                                            10    10    10
+# frame 10:                                                 10    10    10
+
 
 # when you make a throw:
 # - if the previous frame was a strike or a spare, double the throw
