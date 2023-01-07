@@ -5,59 +5,53 @@
 # a strike is when you get all pins down on first throw
 #   > in this case, the next two throws count for this frame
 
-total = 0
-bonus = 0
-prev_frame = ""
-prev_prev_frame = ""
-frame_score = 0
+prev_throw = ""
+prev_prev_throw = ""
+frame_score = [0] * 10
+current_frame = 0
+throw_num = 1
 
-# frame_score.append(0)  # [0]
-# frame_score.append(7)  # [0,7]
-# frame_score[0] = 5  # [5,7]
+while True:
+    # throw ball
+    throw = int(input("Enter your score: "))
+    if current_frame < 10:
+        # add points to frame
+        frame_score[current_frame] += throw
 
-# loop through each frame...
-for x in range(12):
-    # frame_score.append(0)
-    frame = 0
-    throw2 = 0
-    last_bonus = bonus
+    # add points to previous frames with spares / strikes
+    if prev_throw == "strike" or prev_throw == "spare":
+        frame_score[current_frame - 1] += throw
+    if prev_prev_throw == "strike":
+        frame_score[current_frame - 2] += throw
 
-    # get the throw scores
-    throw = int(input("Enter your First score: "))
-    if throw < 10:
-        throw2 = int(input("Enter your Second score: "))
-    frame = throw + throw2
+    # track if the previous frame and prev_prev_frame are spares / strikes
+    prev_prev_throw = prev_throw
 
-    # add points to previous frames with spares or strikes
-    if prev_frame == "strike" or prev_frame == "spare":
-        total += throw
-    if prev_frame == "strike":
-        total += throw2
-    if prev_prev_frame == "strike":
-        total += throw
-
-    # keep track of what happened two frames ago
-    prev_prev_frame = prev_frame
-
-    # store info of this frame so the next frame can use it
-    if throw == 10:
-        prev_frame = "strike"
-    elif frame == 10:
-        prev_frame = "spare"
+    if current_frame < 10:
+        if frame_score[current_frame] == 10 and throw_num == 1:
+            prev_throw = "strike"
+        elif frame_score[current_frame] == 10 and throw_num == 2:
+            prev_throw = "spare"
+        else:
+            prev_throw = ""
+        # increment frame
+        if frame_score[current_frame] == 10 or throw_num == 2:
+            throw_num = 1
+            current_frame += 1
+        else:
+            throw_num += 1
     else:
-        prev_frame = ""
+        prev_throw = ""
 
-    # print(frame_score)
-    print("Frame: ", frame)
-    if x <= 10:
-        total += frame
-    print("Total score: " + str(total))
-    # frame_score = frame
+    print(frame_score)
 
-    if x >= 10 and prev_frame == "" and prev_prev_frame == "":
+    # stop loop if frame is 10 and not frames have spares/strikes to throw for
+    if current_frame >= 10 and prev_throw == "" and prev_prev_throw != "strike":
         break
 
-print("Final score " + str(total))
+
+print(sum(frame_score))
+
 
 # throw
 # throw:   1    2     3    4     5    6    7    8      9    10   11     12
