@@ -25,7 +25,10 @@ while True:
         frame_score[current_frame - 2] += throw
 
     # track if the previous frame and prev_prev_frame are spares / strikes
-    prev_prev_throw = prev_throw
+    if current_frame < 10:
+        prev_prev_throw = prev_throw
+    if current_frame == 10 and prev_prev_throw == "":
+        prev_throw = ""
 
     if current_frame < 10:
         if frame_score[current_frame] == 10 and throw_num == 1:
@@ -41,7 +44,7 @@ while True:
         else:
             throw_num += 1
     else:
-        prev_throw = ""
+        prev_prev_throw = ""
 
     print(frame_score)
 
